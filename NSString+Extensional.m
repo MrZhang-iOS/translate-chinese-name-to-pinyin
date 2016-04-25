@@ -68,8 +68,8 @@
                                                       ,@[@"he",@"hei"],@"黑"
                                                       ,@[@"ge",@"gai"],@"盖"
                                                       ,@[@"shen",@"chen"],@"沈"
-                                                      ,@[@"yuchi",@"weichi"],@"尉迟"
-                                                      ,@[@"moqi",@"wanqi"],@"万俟"
+                                                      ,@[@"yu chi",@"wei chi"],@"尉迟"
+                                                      ,@[@"mo qi",@"wan qi"],@"万俟"
                                                       ,nil];
                   });
     return g_pAllPolyphoneSurnamePinYin;
@@ -105,8 +105,8 @@
                                                                  ,@[@"hè",@"hēi"],@"黑"
                                                                  ,@[@"gě",@"gài"],@"盖"
                                                                  ,@[@"shěn",@"chén"],@"沈"
-                                                                 ,@[@"yùchí",@"wèichí"],@"尉迟"
-                                                                 ,@[@"mòqí",@"wànqí"],@"万俟"
+                                                                 ,@[@"yù chí",@"wèi chí"],@"尉迟"
+                                                                 ,@[@"mò qí",@"wàn qí"],@"万俟"
                                                                  ,nil];
                   });
     return g_pAllPolyphoneSurnamePinYinWithYinDiao;
