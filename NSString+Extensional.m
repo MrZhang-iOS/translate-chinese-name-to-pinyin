@@ -35,6 +35,7 @@
 //*  沈：shěn 姓氏时不读chén。系统翻译默认将该字翻译成chén
 //*  尉迟：yù chí 复姓。系统翻译默认将该字翻译成wèi chí
 //*  万俟：mò qí  复姓。系统翻译默认将该字翻译成wàn qí
+//*【谌，读音作chén。因南北方文化差异不同，用作姓氏时即读chén也可读shèn。考虑效率问题所以未录入，以系统翻译为准】
 //****************************************************************************************************
 
 
@@ -155,7 +156,13 @@
  */
 - (NSString*)pinyinForSort:(BOOL)isForSurname withYindiao:(BOOL)bFlag;
 {
-    NSMutableString *mutableString = [NSMutableString stringWithString:self];
+    NSString* convertString = self;
+    if (isForSurname)
+    {
+        //如果是姓名优先去掉“·”符号
+        convertString = [self stringByReplacingOccurrencesOfString:@"·" withString:@""];
+    }
+    NSMutableString *mutableString = [NSMutableString stringWithString:convertString];
     CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformToLatin, false);
     if (bFlag)
     {
@@ -168,7 +175,7 @@
             NSArray* allPolyphoneSurname = [[NSString getDicForAllPolyphoneSurnamePinYinWithYinDiao] allKeys];
             for (NSString* tempPolyphoneSurname in allPolyphoneSurname)
             {
-                if ([self hasPrefix:tempPolyphoneSurname])
+                if ([convertString hasPrefix:tempPolyphoneSurname])
                 {
                     NSArray* arrayOfPolyphoneSurnamePinYinWithYinDiao = [[NSString getDicForAllPolyphoneSurnamePinYinWithYinDiao] valueForKey:tempPolyphoneSurname];
                     NSString* rightPinYin = [arrayOfPolyphoneSurnamePinYinWithYinDiao getObjectAtIndex:0];
@@ -195,7 +202,7 @@
             NSArray* allPolyphoneSurname = [[NSString getDicForAllPolyphoneSurnamePinYin] allKeys];
             for (NSString* tempPolyphoneSurname in allPolyphoneSurname)
             {
-                if ([self hasPrefix:tempPolyphoneSurname])
+                if ([convertString hasPrefix:tempPolyphoneSurname])
                 {
                     NSArray* arrayOfPolyphoneSurnamePinYin = [[NSString getDicForAllPolyphoneSurnamePinYin] valueForKey:tempPolyphoneSurname];
                     NSString* rightPinYin = [arrayOfPolyphoneSurnamePinYin getObjectAtIndex:0];
@@ -216,13 +223,19 @@
 #pragma mark - PublicFunctions
 - (NSString*)firstLettersForSort:(BOOL)isForSurname;
 {
+    NSString* convertString = self;
+    if (isForSurname)
+    {
+        //如果是姓名优先去掉“·”符号
+        convertString = [self stringByReplacingOccurrencesOfString:@"·" withString:@""];
+    }
     NSMutableString* resultString = [NSMutableString string];
-    if (self.length > 0)
+    if (convertString.length > 0)
     {
         unichar indexChar;
-        for (NSUInteger nIndex = 0; nIndex < self.length; ++nIndex)
+        for (NSUInteger nIndex = 0; nIndex < convertString.length; ++nIndex)
         {
-            indexChar = [self characterAtIndex:nIndex];
+            indexChar = [convertString characterAtIndex:nIndex];
             //判断字符是否为英文字母
             if ((indexChar >= 'A' && indexChar <= 'Z') ||
                 (indexChar >= 'a' && indexChar <= 'z'))
@@ -239,13 +252,13 @@
                 }
                 else//未识别字符保持不变
                 {
-                    [resultString appendString:[self substringWithRange:NSMakeRange(nIndex, 1)]];
+                    [resultString appendString:[convertString substringWithRange:NSMakeRange(nIndex, 1)]];
                 }
             }
             //其他字符保持不变
             else
             {
-                [resultString appendString:[self substringWithRange:NSMakeRange(nIndex, 1)]];
+                [resultString appendString:[convertString substringWithRange:NSMakeRange(nIndex, 1)]];
             }
         }
         if (isForSurname)
@@ -254,7 +267,7 @@
             NSArray* allPolyphoneSurname = [[NSString getDicForAllPolyphoneSurnameFirstLetters] allKeys];
             for (NSString* tempPolyphoneSurname in allPolyphoneSurname)
             {
-                if ([self hasPrefix:tempPolyphoneSurname])
+                if ([convertString hasPrefix:tempPolyphoneSurname])
                 {
                     [resultString replaceCharactersInRange:NSMakeRange(0, tempPolyphoneSurname.length) withString:[[NSString getDicForAllPolyphoneSurnameFirstLetters] valueForKey:tempPolyphoneSurname]];
                     break;
